@@ -8,4 +8,13 @@ MainAuthRouter.route('/register')
         response.send('Post Auth Router Register')
     })
 
+MainAuthRouter.route('/login')
+    .get((request, response) => {
+        response.render('login')
+    })
+
+    .post((request, response) => {
+        response.send('Post Auth Router Register')
+    })
+
 module.exports = MainAuthRouter
