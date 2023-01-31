@@ -3,12 +3,16 @@ const app = express();
 const port = 3000;
 const path = require('path');
 
+// EJS - Embedded JavaScript Templates
 app.set('view engine', 'ejs')
 // Update the location of the folder for response.render to use
 app.set('views', path.join(__dirname, 'src/templates/views'))
 
+// Set up middleware to parse form data and add to request body
+app.use(express.urlencoded({extended: true}))
+
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.render('register');
 });
 
 // Import function from routes module
@@ -19,5 +23,3 @@ initRoutes(app);
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
-
-// EJS - Embedded JavaScript Templates
