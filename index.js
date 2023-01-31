@@ -1,7 +1,12 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const app = express();
 const port = 3000;
 const path = require('path');
+const { connectDB } = require('./src/db');
+
+connectDB();
 
 // EJS - Embedded JavaScript Templates
 app.set('view engine', 'ejs')
