@@ -7,8 +7,8 @@ app.set('view engine', 'ejs')
 // Update the location of the folder for response.render to use
 app.set('views', path.join(__dirname, 'src/templates/views'))
 
-app.get('/', (request, response) => {
-    response.send('Hello World');
+app.get('/', (req, res) => {
+    res.send('Hello World');
 });
 
 // Import function from routes module
