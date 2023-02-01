@@ -1,5 +1,5 @@
 // Import Schema from graphql
-const { GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
+const { GraphQLSchema, GraphQLObjectType } = require('graphql');
 const queries = require('./queries')
 const mutations = require('./mutations')
 

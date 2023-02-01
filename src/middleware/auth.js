@@ -1,4 +1,4 @@
-
+const jwt = require('jsonwebtoken')
 const unprotectedRoutes = [
     "/auth/register",
     "/auth/login",
@@ -6,21 +6,20 @@ const unprotectedRoutes = [
 ];
 
 const authenticate = async (req, res, next) => {
-        
+
     try {
         const token = req.cookies?.jwtToken || ""
-        const verified = await jwt.verify(token, process.env.JWT_SECRET);
-        console.log(verified)
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
         req.verifiedUser = verified.user;
-        console.log(request)
+        next()
     } catch(err){
-
+        console.log(err);
         if (unprotectedRoutes.includes(req.path)){
             next()
         } else {
             res.redirect("/auth/login")
-        }
+        };
     }
-}
+};
 
 module.exports = { authenticate }

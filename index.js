@@ -13,17 +13,17 @@ const cookieParser = require('cookie-parser')
 connectDB();
 
 const myLogger = function(req, res, next){
-    console.log('Logged');
+    console.log(req.path);
     next()
 }
 
 app.use(myLogger);
 
 // Add cookie parser middleware before authenticate
-app.use(cookieParser())
+app.use(cookieParser());
 
 // Add authentication middleware to the app
-app.use(authenticate)
+app.use(authenticate);
 
 // Add graphql middleware to app
 app.use('/graphql', graphqlHTTP({
@@ -37,7 +37,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'src/templates/views'))
 
 // Set up middleware to parse form data and add to request body
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
     res.send('Hello');
