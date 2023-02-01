@@ -1,5 +1,3 @@
-const { User } = require('../../models')
-const bcrypt = require('bcrypt')
 const axios = require('axios');
 
 module.exports = async (req, res) => {
@@ -32,8 +30,10 @@ module.exports = async (req, res) => {
 
             const jwtToken = data.data.register
             console.log(jwtToken);
+            res.cookie('jwtToken', jwtToken, { httpOnly: true })
+
             res.redirect('/')
-            
+
         } catch(err) {
             console.log(err)
             res.redirect('/auth/register')
