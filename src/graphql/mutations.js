@@ -39,7 +39,7 @@ const login = {
         password: { type: GraphQLString }
     },
     async resolve(parent, args){
-        // Get user from database based on the email
+        // Get user from database based on the username
         const user = await User.findOne({ username: args.username })
         // Get the hashed password from the user or set it to an empty string if no user
         const hashedPassword = user?.password || ""
