@@ -1,7 +1,7 @@
 // Import built-in graphql types
-const { GraphQLObjectType, GraphQLID, GraphQLString } = require('graphql');
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInputObjectType, GraphQLInt, GraphQLList } = require('graphql');
 // Import User Model
-const { User } = require('../models')
+const { User, Quiz, Question } = require('../models')
 
 const UserType = new GraphQLObjectType(
     {
@@ -10,7 +10,13 @@ const UserType = new GraphQLObjectType(
         fields: () => ({
             id: { type: GraphQLID },
             username: { type: GraphQLString },
-            email: { type: GraphQLString }
+            email: { type: GraphQLString },
+            quizzes: {
+                type: new GraphQLList(QuizType),
+                resolve(parent, args){
+                    return Quiz.find( { userId: parent.id } )
+                }
+            }
         })
     }
 )
@@ -35,7 +41,47 @@ const QuizType = new GraphQLObjectType(
     }
 )
 
+const QuestionInputType = new GraphQLInputObjectType(
+    {
+        name: 'QuestionInput',
+        description: 'Question Input Type',
+        fields: () => ({
+            title: { type: GraphQLString },
+            order: { type: GraphQLInt },
+            correctAnswer: { type: GraphQLString }
+        })
+    }
+)
+
+// Create a Question Type for queries
+const QuestionType = new GraphQLObjectType(
+    {
+        name: 'Question',
+        description: 'Question Type',
+        fields: () => ({
+            id: { type: GraphQLID },
+            title: { type: GraphQLString },
+            correctAnswer: { type: GraphQLString },
+            order: { type: GraphQLInt },
+            quizId: { type: GraphQLID },
+            quiz: {
+                type: QuizType,
+                resolve(parent, args){
+                    return Quiz.findById(parent.quizId)
+                }
+            },
+            questions: {
+                type: new GraphQLList(QuestionType),
+                resolve(parent, args){
+                    return Question.find( { quizId: parent.id } )
+                }
+            }
+        })
+    }
+)
+
 module.exports = {
     UserType,
-    QuizType
+    QuizType,
+    QuestionInputType
 }

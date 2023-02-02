@@ -1,7 +1,8 @@
-const { GraphQLString, GraphQLID } = require('graphql');
-const { User, Quiz } = require('../models');
+const { GraphQLString, GraphQLID, GraphQLList, GraphQLNonNull } = require('graphql');
+const { User, Quiz, Question } = require('../models');
 const bcrypt = require('bcrypt');
 const { createJwtToken } = require('../util/auth')
+const { QuestionInputType } = require('./types');
 
 const register = {
     type: GraphQLString,
@@ -61,7 +62,8 @@ const createQuiz = {
     args: {
         title: { type: GraphQLString },
         description: { type: GraphQLString },
-        userId: { type: GraphQLString }
+        userId: { type: GraphQLString },
+        questions: { type: new GraphQLNonNull(new GraphQLList(QuestionInputType)) }
     },
     async resolve(parent, args){
         // Generate a slug for our quiz based on the title
@@ -85,6 +87,18 @@ const createQuiz = {
         })
 
         quiz.save()
+        // Loop through all of the QuestionInputs and create a new Question instance with quiz ID
+        for (let question of args.questions){
+        // Create new Question Instance with QuestionInput data and quiz id from recently created quiz
+            const newQuestion = new Question({
+                title: question.title,
+                correctAnswer: question.correctAnswer,
+                order: question.order,
+                quizId: quiz.id
+            })
+            // Save it to the database
+            newQuestion.save()
+        }
 
         return quiz.slug
     }
