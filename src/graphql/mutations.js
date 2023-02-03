@@ -62,7 +62,7 @@ const createQuiz = {
     args: {
         title: { type: GraphQLString },
         description: { type: GraphQLString },
-        userId: { type: GraphQLString },
+        userId: { type: GraphQLID },
         questions: { type: new GraphQLNonNull(new GraphQLList(QuestionInputType)) }
     },
     async resolve(parent, args){
