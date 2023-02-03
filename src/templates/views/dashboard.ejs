@@ -1,4 +1,4 @@
-<%- include('../partials/header.ejs') %>
+<%- include("../partials/header.ejs") %>
 
 <div class="container">
     <h1 class="my-4">Quizly - Dashboard</h1>
@@ -18,14 +18,17 @@
             <% for( let quiz of user.quizzes ) { %>
                 <tr>
                     <td>
-                        <a href="/quiz/<%= quiz.slug %>"><strong><%= quiz.title %></strong></a>
+                        <a href="/quiz/<%= quiz?.slug %>"><strong><%= quiz?.title %></strong></a>
                     </td>
-                    <td>2</td>
-                    <td>100%</td>
+                    <td>
+                        <%= quiz.submissions.length %>
+                    </td>
+                    <td>
+                        <%= quiz.avgScore.toFixed(2) %>%
+                    </td>
                 </tr>
             <% } %>
         </tbody>
     </table>
 </div>
-
-<%- include('../partials/footer.ejs') %>
+<%- include("../partials/footer.ejs") %>
